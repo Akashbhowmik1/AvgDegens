@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>avgdegens · leaderboard</title>
+    <style>
+        /* ===== RESET & VARIABLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-smooth: always;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        :root {
+            /* base colors - enhanced with neon palette */
+            --bg-main: #0a0f1f;
+            --bg-card: rgba(18, 25, 45, 0.85);
+            --bg-soft: rgba(12, 18, 34, 0.9);
+            --accent: #5a8cff;
+            --accent-light: #7aa5ff;
+            --accent-glow: #3a7bd5;
+            --text-main: #ffffff;
+            --text-soft: #b8c7ff;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            
+            /* vibrant neon colors */
+            --neon-blue: #00f3ff;
+            --neon-purple: #b400ff;
+            --neon-pink: #ff3b9b;
+            --neon-orange: #ff9f1c;
+            --neon-green: #00ff9d;
+            --neon-yellow: #ffe600;
+            
+            /* podium accents - super vibrant */
+            --gold: #ffd966;
+            --gold-glow: #ffb700;
+            --silver: #e0e0e0;
+            --silver-glow: #b0b0b0;
+            --bronze: #ffb347;
+            --bronze-glow: #ff8c00;
+            
+            /* spacing */
+            --space-xs: 0.75rem;
+            --space-sm: 1.25rem;
+            --space-md: 1.75rem;
+            --space-lg: 2.5rem;
+            --space-xl: 3rem;
+            
+            /* glass effect */
+            --glass-blur: 10px;
+            --glass-blur-mobile: 5px;
+            --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+            
+            /* animations */
+            --anim-duration: 0.3s;
+            --anim-slow: 8s;
+        }
+
+        @media (prefers-reduced-motion) {
+            :root {
+                --anim-duration: 0s;
+                --anim-slow: 0s;
+            }
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-sm) var(--space-sm) var(--space-lg);
+            background: linear-gradient(135deg, #0a0f1f 0%, #1a1f35 50%, #0f1a2f 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--neon-blue) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, var(--neon-purple) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, var(--neon-pink) 0%, transparent 30%),
+                radial-gradient(circle at 70% 20%, var(--neon-orange) 0%, transparent 20%);
+            opacity: 0.15;
+            filter: blur(60px);
+            animation: glowPulse 10s ease infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.05); }
+        }
+
+        /* Floating orbs with trails */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent);
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 1;
+            animation: floatOrb 20s infinite ease-in-out;
+        }
+
+        .orb:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            background: radial-gradient(circle, rgba(0,243,255,0.3), transparent);
+            animation-duration: 25s;
+        }
+
+        .orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            right: 5%;
+            background: radial-gradient(circle, rgba(180,0,255,0.3), transparent);
+            animation-duration: 30s;
+            animation-delay: -5s;
+        }
+
+        .orb:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 40%;
+            right: 20%;
+            background: radial-gradient(circle, rgba(255,59,155,0.3), transparent);
+            animation-duration: 20s;
+            animation-delay: -2s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -30px) scale(1.1); }
+            50% { transform: translate(20px, 50px) scale(0.95); }
+            75% { transform: translate(-40px, 20px) scale(1.05); }
+        }
+
+        /* Twinkling stars */
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .stars::before,
+        .stars::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(2px 2px at 10px 20px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 30px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 150px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 200px 300px, var(--neon-blue), rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 350px 100px, var(--neon-purple), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 400px 250px, var(--neon-pink), rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 500px 400px, var(--neon-orange), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 600px 80px, var(--neon-green), rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite alternate;
+            opacity: 0.5;
+        }
+
+        .stars::after {
+            background-image: 
+                radial-gradient(2px 2px at 15px 25px, #fff, rgba(0,0,0,0)),
+                radial-gradient(3px 3px at 45px 85px, var(--neon-blue), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 75px 165px, #fff, rgba(0,0,0,0)),
+                radial-gradient(4px 4px at 115px 55px, var(--neon-purple), rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 185px 135px, var(--neon-pink), rgba(0,0,0,0));
+            background-size: 250px 250px;
+            animation: twinkle 7s infinite alternate-reverse;
+            opacity: 0.3;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        /* Neon grid lines */
+        .grid-lines {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0,243,255,0.1) 50px, transparent 51px),
+                repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(180,0,255,0.1) 50px, transparent 51px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+            animation: gridShift 30s linear infinite;
+        }
+
+        @keyframes gridShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        .leaderboard-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            animation: containerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* ===== GLASS CARD - ENHANCED ===== */
+        .glass-card {
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 0 20px rgba(90, 140, 255, 0.2);
+            transition: all var(--anim-duration) cubic-bezier(0.2, 0, 0, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, 
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .glass-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                0 0 30px rgba(90, 140, 255, 0.4);
+        }
+
+        /* ===== HEADER ===== */
+        .title-section {
+            text-align: center;
+            margin: var(--space-xs) 0 var(--space-lg);
+        }
+
+        .site-name {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, 
+                #fff 0%,
+                var(--neon-blue) 25%,
+                var(--neon-purple) 50%,
+                var(--neon-pink) 75%,
+                #fff 100%);
+            background-size: 300% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientText 5s linear infinite;
+            text-shadow: 0 0 20px rgba(90, 140, 255, 0.3);
+            position: relative;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .prize-pool {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, 
+                var(--neon-blue),
+                var(--neon-purple),
+                var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 0.2rem;
+            animation: prizePulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(90, 140, 255, 0.5));
+        }
+
+        @keyframes prizePulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(90, 140, 255, 0.5)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 25px rgba(90, 140, 255, 0.8)); }
+        }
+
+        .prize-pool small {
+            font-size: 1.4rem;
+            color: var(--text-soft);
+            opacity: 0.8;
+        }
+
+        .sub-line {
+            color: var(--text-soft);
+            font-size: 1.2rem;
+            margin-top: var(--space-xs);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .join-btn {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: var(--space-sm);
+            transition: all var(--anim-duration) ease;
+            box-shadow: 0 0 20px rgba(90, 140, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .join-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+
+        .join-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .join-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(90, 140, 255, 0.6);
+        }
+
+        /* ===== COUNTDOWN ===== */
+        .countdown-card {
+            padding: var(--space-md) var(--space-sm);
+            margin-bottom: var(--space-lg);
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(var(--glass-blur));
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(0, 243, 255, 0.2),
+                rgba(180, 0, 255, 0.2),
+                transparent);
+            animation: borderFlow 3s linear infinite;
+        }
+
+        @keyframes borderFlow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .countdown-label {
+            text-align: center;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: var(--space-sm);
+            font-weight: 600;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .time-segment {
+            text-align: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .time-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: rgba(10, 15, 28, 0.6);
+            padding: 0.5rem 0.2rem;
+            border-radius: 20px;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                inset 0 2px 5px rgba(0,0,0,0.5),
+                0 5px 15px rgba(0, 243, 255, 0.2);
+            display: block;
+            backdrop-filter: blur(5px);
+            animation: numberGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes numberGlow {
+            0%, 100% { box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 15px rgba(0, 243, 255, 0.2); }
+            50% { box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 25px rgba(180, 0, 255, 0.4); }
+        }
+
+        .time-unit {
+            font-size: 0.8rem;
+            margin-top: 8px;
+            color: var(--text-soft);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-sep {
+            font-size: 2.5rem;
+            font-weight: 300;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== PODIUM - ENHANCED ===== */
+        .podium-row {
+            display: flex;
+            gap: var(--space-lg);
+            justify-content: center;
+            margin-bottom: var(--space-xl);
+            flex-wrap: wrap;
+            align-items: flex-end;
+            perspective: 1000px;
+        }
+
+        .podium-card {
+    flex: 1 1 250px;
+    min-width: 220px;
+    min-height: 520px;   /* bigger base height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* center vertically */
+    align-items: center;       /* center horizontally */
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    border-radius: 40px;
+    background: rgba(18, 25, 45, 0.85);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 2px solid transparent;
+    box-shadow: 
+        0 25px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    position: relative;
+}
+#podium1 {
+    min-height: 320px;
+}
+
+#podium2 {
+    min-height: 300px;
+}
+
+#podium3 {
+    min-height: 300px;
+}
+
+/* 🔥 ADD THIS RIGHT HERE */
+.podium-card {
+    z-index: 1;
+    overflow: visible;
+}
+
+
+
+#podium1 { z-index: 3; }
+#podium2 { z-index: 2; }
+#podium3 { z-index: 2; }
+
+        .podium-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(125deg, 
+                transparent 30%,
+                rgba(255, 255, 255, 0.2) 50%,
+                transparent 70%);
+            transform: translateX(-100%) rotate(10deg);
+            transition: transform 0.6s;
+        }
+
+        .podium-card:hover {
+            transform: translateY(-10px) rotateX(2deg) scale(1.02);
+        }
+
+        .podium-card:hover::before {
+            transform: translateX(100%) rotate(10deg);
+        }
+
+        /* Podium-specific styles */
+        #podium1 {
+            background: radial-gradient(ellipse at 50% 20%, rgba(255, 215, 0, 0.2), rgba(18, 25, 45, 0.9));
+            border-color: var(--gold);
+            animation: firstPlaceFloat 4s ease-in-out infinite;
+        }
+
+        #podium2 {
+            background: radial-gradient(ellipse at 50% 20%, rgba(192, 192, 192, 0.2), rgba(18, 25, 45, 0.9));
+            border-color: var(--silver);
+            animation: secondPlaceFloat 4.5s ease-in-out infinite;
+        }
+
+        #podium3 {
+            background: radial-gradient(ellipse at 50% 20%, rgba(255, 180, 70, 0.2), rgba(18, 25, 45, 0.9));
+            border-color: var(--bronze);
+            animation: thirdPlaceFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes firstPlaceFloat {
+            0%, 100% { transform: translateY(-15px) scale(1.05); }
+            50% { transform: translateY(-25px) scale(1.08); }
+        }
+
+        @keyframes secondPlaceFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+
+        @keyframes thirdPlaceFloat {
+            0%, 100% { transform: translateY(5px) scale(0.98); }
+            50% { transform: translateY(-5px) scale(1); }
+        }
+
+        .podium-rank {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        #podium1 .podium-rank {
+            color: var(--gold);
+            text-shadow: 0 0 20px var(--gold);
+        }
+
+        #podium2 .podium-rank {
+            color: var(--silver);
+            text-shadow: 0 0 20px var(--silver);
+        }
+
+        #podium3 .podium-rank {
+            color: var(--bronze);
+            text-shadow: 0 0 20px var(--bronze);
+        }
+
+        .podium-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: var(--space-xs) 0;
+            position: relative;
+        }
+
+        #podium1 .podium-name {
+            background: linear-gradient(135deg, var(--gold), #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .podium-wager {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 40px;
+            padding: 0.6rem 0.5rem;
+            font-size: 1.3rem;
+            color: var(--text-soft);
+            backdrop-filter: blur(5px);
+            margin: var(--space-xs) 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .podium-prize {
+            font-weight: 700;
+            margin-top: var(--space-xs);
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid;
+            transition: all var(--anim-duration) ease;
+        }
+
+        #podium1 .podium-prize {
+            border-color: var(--gold);
+            color: var(--gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        #podium2 .podium-prize {
+            border-color: var(--silver);
+            color: var(--silver);
+        }
+
+        #podium3 .podium-prize {
+            border-color: var(--bronze);
+            color: var(--bronze);
+        }
+
+        .podium-prize:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        /* Crown animation */
+        .crown {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2.8rem;
+    z-index: 1000; /* force above everything */
+    pointer-events: none;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+    animation: crownSpin 6s linear infinite;
+}
+
+
+        @keyframes crownSpin {
+            from { transform: translateX(-50%) rotate(0deg); }
+            to { transform: translateX(-50%) rotate(360deg); }
+        }
+
+        /* ===== TABLE - ENHANCED ===== */
+       .leaderboard-table {
+    border-radius: 32px;
+    overflow: hidden;
+    background: rgba(18, 25, 45, 0.6);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+        .leaderboard-table::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .leaderboard-table::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .leaderboard-table::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table-header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 15, 25, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-pink)) 1;
+        }
+
+        .table-header,
+        .table-row {
+            display: grid;
+            grid-template-columns: 70px 1fr 1fr 1fr;
+            padding: 1.2rem 1.5rem;
+            align-items: center;
+        }
+
+        .table-header div {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .table-row {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all var(--anim-duration) ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .table-row::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(90, 140, 255, 0.1),
+                transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+
+        .table-row:hover::before {
+            transform: translateX(100%);
+        }
+
+        .table-row:hover {
+            background: rgba(90, 140, 255, 0.1);
+            transform: scale(1.01) translateY(-2px);
+        }
+
+        .table-row:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .rank-col {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .wager-col,
+        .prize-col {
+            font-weight: 500;
+        }
+
+        .prize-col {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        .refresh-highlight {
+            animation: tableFlash 1s ease;
+        }
+
+        @keyframes tableFlash {
+            0%, 100% { background: rgba(90, 140, 255, 0); }
+            50% { background: rgba(90, 140, 255, 0.2); }
+        }
+
+        .small-note {
+            margin-top: var(--space-md);
+            font-size: 0.9rem;
+            background: linear-gradient(135deg, var(--text-soft), #fff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+
+        /* ===== SKELETON LOADING ===== */
+        .skeleton {
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.2),
+                rgba(255, 255, 255, 0.1));
+            background-size: 200% 100%;
+            animation: skeletonLoad 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeletonLoad {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .leaderboard-container {
+                max-width: 95%;
+            }
+
+            .site-name {
+                font-size: 2.8rem;
+            }
+
+            .prize-pool {
+                font-size: 3rem;
+            }
+
+            .podium-card {
+                min-width: 200px;
+                min-height: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .podium-row {
+                gap: var(--space-md);
+            }
+
+            .podium-card {
+                min-width: 180px;
+                min-height: 260px;
+            }
+
+            .podium-rank {
+                font-size: 3.2rem;
+            }
+
+            .podium-name {
+                font-size: 1.3rem;
+            }
+
+            .podium-wager {
+                font-size: 1.1rem;
+            }
+
+            .podium-prize {
+                font-size: 1.2rem;
+                padding: 0.4rem 1.2rem;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 50px 1fr 1fr 1fr;
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .time-number {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+
+
+    .podium-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .podium-card {
+        width: 100%;
+        max-width: 400px;
+        min-height: auto;   /* allow height to grow naturally */
+        padding: 2rem 1rem;
+          margin-bottom: 2rem;
+    }
+
+    #podium1,
+    #podium2,
+    #podium3 {
+        min-height: auto;
+
+    }
+    #podium1 { min-height: 340px; }
+    #podium2 { min-height: 340px; }
+    #podium3 { min-height: 340px; }
+
+}
+
+            .countdown-timer {
+                gap: 0.2rem;
+            }
+
+            .time-segment {
+                min-width: 60px;
+            }
+
+            .time-number {
+                font-size: 1.8rem;
+                padding: 0.3rem 0;
+            }
+
+            .countdown-sep {
+                font-size: 1.8rem;
+            }
+
+            .join-btn {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+        }
+    
+
+        @media (max-width: 480px) {
+            .site-name {
+                font-size: 2rem;
+            }
+
+            .prize-pool {
+                font-size: 2.2rem;
+            }
+
+            .prize-pool small {
+                font-size: 1rem;
+            }
+
+            .sub-line {
+                font-size: 0.9rem;
+            }
+
+            .countdown-label {
+                font-size: 0.8rem;
+            }
+
+            .time-number {
+                font-size: 1.5rem;
+            }
+
+            .time-unit {
+                font-size: 0.6rem;
+            }
+
+            .time-segment {
+                min-width: 50px;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 40px 1fr 1fr 1fr;
+                padding: 0.8rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            
+        }
+
+        @media (max-width: 360px) {
+            .site-name {
+                font-size: 1.8rem;
+            }
+
+            .prize-pool {
+                font-size: 2rem;
+            }
+
+            .time-number {
+                font-size: 1.2rem;
+            }
+
+            .time-segment {
+                min-width: 45px;
+            }
+
+            
+           
+        }
+
+        /* Landscape mode */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .podium-row {
+                flex-direction: row;
+            }
+
+            .podium-card {
+                min-height: 200px;
+            }
+
+            .leaderboard-table {
+                max-height: 300px;
+            }
+        }
+
+        /* High refresh rate devices */
+        @media (min-width: 1200px) {
+            .leaderboard-container {
+                max-width: 1100px;
+            }
+
+            .podium-card {
+                min-width: 280px;
+                min-height: 320px;
+            }
+
+            .podium-rank {
+                font-size: 4.5rem;
+            }
+
+            .podium-name {
+                font-size: 1.8rem;
+            }
+
+            .podium-wager {
+                font-size: 1.4rem;
+            }
+
+            .podium-prize {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Dark mode preference */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-main: #050a15;
+                --bg-card: rgba(10, 15, 25, 0.9);
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .orb,
+            .stars,
+            .grid-lines,
+            .join-btn {
+                display: none;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+
+            .glass-card {
+                background: white;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+
+
+
+
+        .medal-silver {
+    background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+    color: black;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    box-shadow: 0 0 20px rgba(200,200,200,0.8);
+}
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="grid-lines"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    
+    <div class="leaderboard-container">
+        <div class="title-section">
+            <div class="site-name">Avgdegens</div>
+            <div class="prize-pool"> <small>Leaderboards</small></div>
+            <div class="sub-line">⚡ Every BET counts · leaderboard updates every 30 min</div>
+            <button class="join-btn" onclick="window.location.href='https://roulobets.com/?modal=auth&tab=register&ref=avgdegens'">Join Roulo</button>
+        </div>
+
+        <div class="countdown-card glass-card">
+            <div class="countdown-label">🏁 LEADERBOARDS ENDS IN</div>
+            <div class="countdown-timer" id="countdown">
+                <div class="time-segment"><span class="time-number" id="days">01</span><span class="time-unit">DAYS</span></div>
+                <span class="countdown-sep">:</span>
+                <div class="time-segment"><span class="time-number" id="hours">17</span><span class="time-unit">HOURS</span></div>
+                <span class="countdown-sep">:</span>
+                <div class="time-segment"><span class="time-number" id="minutes">40</span><span class="time-unit">MINS</span></div>
+                <span class="countdown-sep">:</span>
+                <div class="time-segment"><span class="time-number" id="seconds">59</span><span class="time-unit">SECS</span></div>
+            </div>
+        </div>
+
+        <div class="podium-row" id="podiumTop">
+            <!-- Skeleton will be replaced by JS -->
+        </div>
+
+        <div class="leaderboard-table" id="leaderboardTable">
+            <div class="table-header">
+                <div>#</div>
+                <div>User</div>
+                <div style="text-align: right;">Wagered</div>
+                <div style="text-align: right;">Prize</div>
+            </div>
+        </div>
+        <div class="small-note">🏆 refreshed every 30 min · roulo bets</div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- configuration ----------
+            const API_KEY = 'nqgf80smpzrncv9v06a496bbwqi7xrgi';
+            const CACHE_DURATION = 30 * 60 * 1000;
+            const REFRESH_INTERVAL = 15 * 60 * 1000;
+            
+            let cachedData = null;
+            let cacheTimestamp = 0;
+            let isFetching = false;
+            let refreshTimeout;
+
+            // DOM references
+            const dom = {
+                days: document.getElementById('days'),
+                hours: document.getElementById('hours'),
+                minutes: document.getElementById('minutes'),
+                seconds: document.getElementById('seconds'),
+                podiumTop: document.getElementById('podiumTop'),
+                table: document.getElementById('leaderboardTable')
+            };
+
+            // ---------- countdown ----------
+            function startCountdown() {
+                window.targetDate = new Date(2026, 2, 13, 23, 59, 59);
+
+                function updateClock() {
+                    const now = new Date();
+                    const diff = window.targetDate - now;
+
+                    if (diff <= 0) {
+                        dom.days.innerText = '00';
+                        dom.hours.innerText = '00';
+                        dom.minutes.innerText = '00';
+                        dom.seconds.innerText = '00';
+                        return;
+                    }
+
+                    const days = Math.floor(diff / 86400000);
+                    const hours = Math.floor((diff % 86400000) / 3600000);
+                    const minutes = Math.floor((diff % 3600000) / 60000);
+                    const seconds = Math.floor((diff % 60000) / 1000);
+
+                    dom.days.innerText = days.toString().padStart(2, '0');
+                    dom.hours.innerText = hours.toString().padStart(2, '0');
+                    dom.minutes.innerText = minutes.toString().padStart(2, '0');
+                    dom.seconds.innerText = seconds.toString().padStart(2, '0');
+                }
+
+                updateClock();
+                setInterval(updateClock, 1000);
+            }
+
+            // ---------- helpers ----------
+            function maskUsername(name) {
+                if (!name) return "Unknown";
+                if (name.length <= 3) return name;
+                return name.substring(0, 3) + "*".repeat(name.length - 3);
+            }
+
+            function calculatePrize(rank) {
+                const prizes = { 1: "$100.00", 2: "$50.00", 3: "$40.00" };
+                return prizes[rank] || "$0.00";
+            }
+
+            // ---------- update UI ----------
+            function buildFullLeaderboard(users) {
+                const fullList = [];
+                for (let i = 0; i < 30; i++) {
+                    const user = users[i];
+                    fullList.push({
+                        rank: i + 1,
+                        user: user ? maskUsername(user.username) : "Unknown",
+                        wager: user ? `$${user.wagerNumber.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "$0.00",
+                        prize: calculatePrize(i + 1)
+                    });
+                }
+                updatePodium(fullList.slice(0, 3));
+                buildTable(fullList.slice(3));
+            }
+
+            function updatePodium(topThree) {
+                dom.podiumTop.classList.remove('podium-skeleton');
+                dom.podiumTop.innerHTML = `
+                    <div class="podium-card" id="podium2">
+                        <div class="crown">🥈</div>
+                        <div class="podium-rank">2</div>
+                        <div class="podium-name">${topThree[1] ? topThree[1].user : 'Unknown'}</div>
+                        <div class="podium-wager">${topThree[1] ? topThree[1].wager : '$0.00'} <span>Wager</span></div>
+                        <div class="podium-prize">${topThree[1] ? topThree[1].prize : '$0.00'}</div>
+                    </div>
+                    <div class="podium-card" id="podium1">
+                        <div class="crown">👑</div>
+                        <div class="podium-rank">1</div>
+                        <div class="podium-name">${topThree[0] ? topThree[0].user : 'Unknown'}</div>
+                        <div class="podium-wager">${topThree[0] ? topThree[0].wager : '$0.00'} <span>Wager</span></div>
+                        <div class="podium-prize">${topThree[0] ? topThree[0].prize : '$0.00'}</div>
+                    </div>
+                    <div class="podium-card" id="podium3">
+                        <div class="crown" >🥉</div>
+                        <div class="podium-rank">3</div>
+                        <div class="podium-name">${topThree[2] ? topThree[2].user : 'Unknown'}</div>
+                        <div class="podium-wager">${topThree[2] ? topThree[2].wager : '$0.00'} <span>Wager</span></div>
+                        <div class="podium-prize">${topThree[2] ? topThree[2].prize : '$0.00'}</div>
+                    </div>
+                `;
+            }
+
+            function buildTable(rowsData) {
+                const existingRows = dom.table.querySelectorAll('.table-row:not(.table-header)');
+                existingRows.forEach(r => r.remove());
+
+                rowsData.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'table-row';
+                    row.innerHTML = `
+                        <div class="rank-col">${item.rank}</div>
+                        <div class="user-col">${item.user}</div>
+                        <div class="wager-col">${item.wager}</div>
+                        <div class="prize-col">${item.prize}</div>
+                    `;
+                    dom.table.appendChild(row);
+                });
+
+                dom.table.classList.add('refresh-highlight');
+                setTimeout(() => dom.table.classList.remove('refresh-highlight'), 1000);
+            }
+
+            // ---------- skeleton ----------
+            function showSkeleton() {
+                dom.podiumTop.classList.add('podium-skeleton');
+                dom.podiumTop.innerHTML = `
+                    <div class="podium-card">
+                        <div class="podium-rank skeleton"></div>
+                        <div class="podium-name skeleton"></div>
+                        <div class="podium-wager skeleton"></div>
+                        <div class="podium-prize skeleton"></div>
+                    </div>
+                    <div class="podium-card">
+                        <div class="podium-rank skeleton"></div>
+                        <div class="podium-name skeleton"></div>
+                        <div class="podium-wager skeleton"></div>
+                        <div class="podium-prize skeleton"></div>
+                    </div>
+                    <div class="podium-card">
+                        <div class="podium-rank skeleton"></div>
+                        <div class="podium-name skeleton"></div>
+                        <div class="podium-wager skeleton"></div>
+                        <div class="podium-prize skeleton"></div>
+                    </div>
+                `;
+            }
+
+            // ---------- fetch ----------
+           async function fetchLeaderboard(force = false) {
+    if (isFetching) return;
+
+    showSkeleton();
+
+    isFetching = true;
+
+    const url = "https://api.roulobets.com/v1/external/affiliates?start_at=2026-02-20&end_at=2026-02-27&key=nqgf80smpzrncv9v06a496bbwqi7xrgi";
+
+    try {
+        const response = await fetch(url);
+        const json = await response.json();
+        const rawUsers = json.affiliates || [];
+
+        const sorted = rawUsers
+            .map(user => ({
+                username: user.username,
+                wagerNumber: Number(user.wagered_amount || 0)
+            }))
+            .sort((a, b) => b.wagerNumber - a.wagerNumber)
+            .slice(0, 30);
+
+        buildFullLeaderboard(sorted);
+
+    } catch (err) {
+        console.error("Fetch error:", err);
+        buildFullLeaderboard([]);
+    } finally {
+        isFetching = false;
+    }
+}
+
+            function debouncedRefresh() {
+                if (refreshTimeout) clearTimeout(refreshTimeout);
+                refreshTimeout = setTimeout(() => {
+                    cacheTimestamp = 0;
+                    fetchLeaderboard(false);
+                }, 500);
+            }
+
+            // ---------- init ----------
+            startCountdown();
+            fetchLeaderboard(false);
+            setInterval(debouncedRefresh, REFRESH_INTERVAL);
+        })();
+    </script>
+</body>
+</html>
