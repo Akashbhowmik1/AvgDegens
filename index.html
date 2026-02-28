@@ -377,6 +377,57 @@
             box-shadow: 0 0 30px rgba(90, 140, 255, 0.6);
         }
 
+        /* ===== SOCIAL & BONUS ROW ===== */
+        .social-bonus-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(20, 30, 55, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 5px 20px rgba(0,243,255,0.3);
+        }
+
+        .bonus-badge {
+            background: linear-gradient(135deg, #ffd966, #ff9f1c);
+            color: #0a0f1f;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 0 20px #ff9f1c;
+            animation: bonusGlow 2s infinite alternate;
+        }
+
+        @keyframes bonusGlow {
+            from { box-shadow: 0 0 10px #ff9f1c; }
+            to { box-shadow: 0 0 30px #ffd966; }
+        }
+
         /* ===== COUNTDOWN ===== */
         .countdown-card {
             padding: var(--space-md) var(--space-sm);
@@ -483,47 +534,30 @@
         }
 
         .podium-card {
-    flex: 1 1 250px;
-    min-width: 220px;
-    min-height: 520px;   /* bigger base height */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;   /* center vertically */
-    align-items: center;       /* center horizontally */
-    text-align: center;
-    padding: 2.5rem 1.5rem;
-    border-radius: 40px;
-    background: rgba(18, 25, 45, 0.85);
-    backdrop-filter: blur(var(--glass-blur));
-    border: 2px solid transparent;
-    box-shadow: 
-        0 25px 60px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-    position: relative;
-}
-#podium1 {
-    min-height: 320px;
-}
+            flex: 1 1 250px;
+            min-width: 220px;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-radius: 40px;
+            background: rgba(18, 25, 45, 0.85);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 2px solid transparent;
+            box-shadow: 
+                0 25px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+            position: relative;
+            z-index: 1;
+            overflow: visible;
+        }
 
-#podium2 {
-    min-height: 300px;
-}
-
-#podium3 {
-    min-height: 300px;
-}
-
-/* 🔥 ADD THIS RIGHT HERE */
-.podium-card {
-    z-index: 1;
-    overflow: visible;
-}
-
-
-
-#podium1 { z-index: 3; }
-#podium2 { z-index: 2; }
-#podium3 { z-index: 2; }
+        #podium1 { z-index: 3; min-height: 340px; }
+        #podium2 { z-index: 2; min-height: 300px; }
+        #podium3 { z-index: 2; min-height: 300px; }
 
         .podium-card::before {
             content: '';
@@ -662,17 +696,16 @@
 
         /* Crown animation */
         .crown {
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2.8rem;
-    z-index: 1000; /* force above everything */
-    pointer-events: none;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
-    animation: crownSpin 6s linear infinite;
-}
-
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.8rem;
+            z-index: 1000;
+            pointer-events: none;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+            animation: crownSpin 6s linear infinite;
+        }
 
         @keyframes crownSpin {
             from { transform: translateX(-50%) rotate(0deg); }
@@ -680,14 +713,14 @@
         }
 
         /* ===== TABLE - ENHANCED ===== */
-       .leaderboard-table {
-    border-radius: 32px;
-    overflow: hidden;
-    background: rgba(18, 25, 45, 0.6);
-    backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
+        .leaderboard-table {
+            border-radius: 32px;
+            overflow: hidden;
+            background: rgba(18, 25, 45, 0.6);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
 
         .leaderboard-table::-webkit-scrollbar {
             width: 8px;
@@ -881,34 +914,23 @@
         }
 
         @media (max-width: 600px) {
+            .podium-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+            }
 
+            .podium-card {
+                width: 100%;
+                max-width: 400px;
+                min-height: auto;
+                padding: 2rem 1rem;
+                margin-bottom: 0.5rem;
+            }
 
-
-    .podium-row {
-        flex-direction: column;
-        align-items: center;
-        gap: 1.5rem;
-    }
-
-    .podium-card {
-        width: 100%;
-        max-width: 400px;
-        min-height: auto;   /* allow height to grow naturally */
-        padding: 2rem 1rem;
-          margin-bottom: 2rem;
-    }
-
-    #podium1,
-    #podium2,
-    #podium3 {
-        min-height: auto;
-
-    }
-    #podium1 { min-height: 340px; }
-    #podium2 { min-height: 340px; }
-    #podium3 { min-height: 340px; }
-
-}
+            #podium1, #podium2, #podium3 {
+                min-height: 300px;
+            }
 
             .countdown-timer {
                 gap: 0.2rem;
@@ -931,8 +953,15 @@
                 padding: 0.8rem 2rem;
                 font-size: 1rem;
             }
+
+            .social-bonus-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .social-link, .bonus-badge {
+                justify-content: center;
+            }
         }
-    
 
         @media (max-width: 480px) {
             .site-name {
@@ -973,8 +1002,6 @@
                 padding: 0.8rem 0.5rem;
                 font-size: 0.8rem;
             }
-
-            
         }
 
         @media (max-width: 360px) {
@@ -993,9 +1020,6 @@
             .time-segment {
                 min-width: 45px;
             }
-
-            
-           
         }
 
         /* Landscape mode */
@@ -1021,7 +1045,7 @@
 
             .podium-card {
                 min-width: 280px;
-                min-height: 320px;
+                min-height: 340px;
             }
 
             .podium-rank {
@@ -1054,7 +1078,8 @@
             .orb,
             .stars,
             .grid-lines,
-            .join-btn {
+            .join-btn,
+            .social-bonus-row {
                 display: none;
             }
 
@@ -1070,20 +1095,76 @@
             }
         }
 
-
-
-
         .medal-silver {
-    background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
-    color: black;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    box-shadow: 0 0 20px rgba(200,200,200,0.8);
+            background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+            color: black;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(200,200,200,0.8);
+        }
+
+        /* ===== MOBILE PERFORMANCE MODE ===== */
+@media (max-width: 768px) {
+
+    body {
+        animation: none;
+        background: linear-gradient(135deg, #0a0f1f 0%, #141b2e 100%);
+    }
+
+    body::before {
+        display: none; /* remove huge blurred glow */
+    }
+
+    .orb,
+    .stars,
+    .grid-lines {
+        display: none; /* remove animated backgrounds */
+    }
+
+    .glass-card,
+    .leaderboard-table,
+    .podium-card {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .podium-card {
+        animation: none;
+        transform: none !important;
+    }
+
+    .crown {
+        animation: none;
+    }
+
+    .countdown-card::after {
+        display: none;
+    }
+
+    .time-number {
+        animation: none;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .glass-card:hover,
+    .podium-card:hover,
+    .table-row:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 768px) {
+
+    body {
+        animation: none;
+        background: linear-gradient(135deg, #0f1630 0%, #1b2445 50%, #16203a 100%);
+    }
+
 }
     </style>
 </head>
@@ -1100,6 +1181,25 @@
             <div class="prize-pool"> <small>Leaderboards</small></div>
             <div class="sub-line">⚡ Every BET counts · leaderboard updates every 30 min</div>
             <button class="join-btn" onclick="window.location.href='https://roulobets.com/?modal=auth&tab=register&ref=avgdegens'">Join Roulo</button>
+        </div>
+
+        <!-- ===== SOCIAL LINKS + WELCOME BONUS (NEW) ===== -->
+        <div class="social-bonus-row">
+            <a href="https://kick.com/avgdegens" target="_blank" rel="noopener" class="social-link">
+                <span>🔥</span> Kick
+            </a>
+            <a href="https://www.twitch.tv/avgdegens" target="_blank" rel="noopener" class="social-link">
+                <span>📺</span> Twitch
+            </a>
+            <a href="https://discord.gg/SmKUShdMK" target="_blank" rel="noopener" class="social-link">
+                <span>💬</span> Discord
+            </a>
+            <a href="https://roulobets.com/?modal=auth&tab=register&ref=avgdegens"
+   target="_blank"
+   rel="noopener"
+   class="bonus-badge">
+    <span>🎁</span> 100% WELCOME BONUS
+</a>
         </div>
 
         <div class="countdown-card glass-card">
@@ -1191,7 +1291,7 @@
             }
 
             function calculatePrize(rank) {
-                const prizes = { 1: "$100.00", 2: "$50.00", 3: "$40.00" };
+                const prizes = { 1: "$100.00", 2: "$60.00", 3: "$40.00" };
                 return prizes[rank] || "$0.00";
             }
 
