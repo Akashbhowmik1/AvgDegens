@@ -1194,12 +1194,7 @@
             <a href="https://discord.gg/SmKUShdMK" target="_blank" rel="noopener" class="social-link">
                 <span>💬</span> Discord
             </a>
-            <a href="https://roulobets.com/?modal=auth&tab=register&ref=avgdegens"
-   target="_blank"
-   rel="noopener"
-   class="bonus-badge">
-    <span>🎁</span> 100% WELCOME BONUS
-</a>
+          
         </div>
 
         <div class="countdown-card glass-card">
@@ -1253,35 +1248,36 @@
             };
 
             // ---------- countdown ----------
-            function startCountdown() {
-                window.targetDate = new Date(2026, 2, 13, 23, 59, 59);
+           function startCountdown() {
+    // 15 March 2026, 9:00 PM
+    window.targetDate = new Date(2026, 2, 15, 21, 0, 0);
 
-                function updateClock() {
-                    const now = new Date();
-                    const diff = window.targetDate - now;
+    function updateClock() {
+        const now = new Date();
+        const diff = window.targetDate - now;
 
-                    if (diff <= 0) {
-                        dom.days.innerText = '00';
-                        dom.hours.innerText = '00';
-                        dom.minutes.innerText = '00';
-                        dom.seconds.innerText = '00';
-                        return;
-                    }
+        if (diff <= 0) {
+            dom.days.innerText = '00';
+            dom.hours.innerText = '00';
+            dom.minutes.innerText = '00';
+            dom.seconds.innerText = '00';
+            return;
+        }
 
-                    const days = Math.floor(diff / 86400000);
-                    const hours = Math.floor((diff % 86400000) / 3600000);
-                    const minutes = Math.floor((diff % 3600000) / 60000);
-                    const seconds = Math.floor((diff % 60000) / 1000);
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
 
-                    dom.days.innerText = days.toString().padStart(2, '0');
-                    dom.hours.innerText = hours.toString().padStart(2, '0');
-                    dom.minutes.innerText = minutes.toString().padStart(2, '0');
-                    dom.seconds.innerText = seconds.toString().padStart(2, '0');
-                }
+        dom.days.innerText = days.toString().padStart(2, '0');
+        dom.hours.innerText = hours.toString().padStart(2, '0');
+        dom.minutes.innerText = minutes.toString().padStart(2, '0');
+        dom.seconds.innerText = seconds.toString().padStart(2, '0');
+    }
 
-                updateClock();
-                setInterval(updateClock, 1000);
-            }
+    updateClock();
+    setInterval(updateClock, 1000);
+}
 
             // ---------- helpers ----------
             function maskUsername(name) {
